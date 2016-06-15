@@ -1,32 +1,15 @@
-# CLI kit
-Boilerplate for starting an es6 node cli project.
+# m0v3js
 
-##Prerequisite
-Have [starter-deck-cli](https://github.com/esayemm/starter-deck-cli) installed
-globally.
+## Installation
 
-##Installation
 ```sh
-sdcli save cli https://github.com/esayemm/starter-deck_cli-kit
-```
-<hr>
-##Development
-####Publish a release
-Use [npm version](https://docs.npmjs.com/cli/version) and follow [semver](http://semver.org/) rules.<br>
-
-```
-npm version [ major | minor | patch ]
+npm i -g m0v3js
 ```
 
-1. bumps package version
-2. creates git tag
-3. push tag
-4. builds
-5. npm publish
+## Usage
 
-####Test without publishing
-Use [npm link](https://docs.npmjs.com/cli/link).
+Use inside a project directory, project root is determined by where the closest `.git` is located up the tree.
 
-```
-npm link
+```sh
+mvjs <input> <output>
 ```
