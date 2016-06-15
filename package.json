@@ -1,26 +1,26 @@
 {
-  "name": "",
+  "name": "m0v3js",
   "version": "0.0.0",
-  "description": "",
+  "description": "CLI for moving js assets and updating file paths in project dir",
   "main": "index.js",
   "scripts": {
     "postversion": "git push && git push --tags && npm publish",
     "lint": "./node_modules/eslint/bin/eslint.js .",
     "test": "npm run lint"
   },
-  "homepage": "",
+  "homepage": "https://github.com/esayemm/m0v3js",
   "bugs": {
-    "url": ""
+    "url": "https://github.com/esayemm/m0v3js/issues"
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/esayemm/m0v3js"
   },
-  "author": "",
+  "author": "Sam Lau",
   "license": "ISC",
   "preferGlobal": "true",
   "bin": {
-    "": "index.js"
+    "mvjs": "index.js"
   },
   "devDependencies": {
     "babel-core": "6.7.6",
@@ -37,6 +37,7 @@
   "dependencies": {
     "app-module-path": "1.0.6",
     "babel-polyfill": "6.7.4",
-    "babel-register": "6.7.2"
+    "babel-register": "6.7.2",
+    "yargs": "^4.7.1"
   }
 }
