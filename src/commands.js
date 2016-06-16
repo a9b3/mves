@@ -9,7 +9,7 @@ export function usage() {
   console.log(``)
   console.log(`Options:`)
   console.log(``)
-  console.log(`  -n    do not update path references (just use mv)`)
+  console.log(`  -o    override output path if it exists`)
   console.log(``)
 }
 

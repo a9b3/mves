@@ -1,6 +1,8 @@
 const argv = require('yargs').argv
 import fs from 'fs'
 import * as commands from './commands.js'
+import { execPromise, isDirectory } from './helper.js'
+import path from 'path'
 
 export function fileExists(file) {
   try {
@@ -11,7 +13,7 @@ export function fileExists(file) {
   }
 }
 
-function main() {
+async function main() {
   const command = argv._[0]
 
   // help/version stuff
@@ -24,16 +26,28 @@ function main() {
   }
 
   // mv logic
-  const input = argv._[0]
-  const output = argv._[1]
+  const input = path.resolve('.', argv._[0])
+  const output = path.resolve('.', argv._[1])
 
   if (!input || !output) {
     console.log(`Must provide input and output`)
     return
   }
   if (!fileExists(input)) {
-    console.log(`${input} is not a valid file path`)
+    console.log(`${argv._[0]} is not a valid file path`)
     return
+  }
+  if ((fileExists(output) && !isDirectory(output)) && !argv.o) {
+    console.log(`${argv._[1]} already exists use -o option to overwrite`)
+    return
+  }
+
+  const mvRes = await execPromise(`mv ${input} ${output}`)
+  try {
+    const projectDir = await execPromise(`git rev-parse --show-toplevel`)
+    console.log(`projectDir`, projectDir)
+  } catch (e) {
+    console.log('ERROR', e)
   }
 }
 
