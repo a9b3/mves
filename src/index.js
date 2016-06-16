@@ -16,10 +16,10 @@ async function main() {
     return
   }
 
-  // mv logic
   const input = path.resolve('.', argv._[0])
   const output = path.resolve('.', argv._[1])
 
+  // error handling
   if (!input || !output) {
     console.log(`Must provide input and output`)
     return
@@ -33,12 +33,14 @@ async function main() {
     return
   }
 
+  // mv
   const mvRes = await execPromise(`mv ${input} ${output}`)
+  // do the file path stuff
   try {
     const projectDir = await execPromise(`git rev-parse --show-toplevel`)
-    console.log(`projectDir`, projectDir)
+    const projectDirFilePath = path.resolve(projectDir)
   } catch (e) {
-    console.log('ERROR', e)
+    // do nothing
   }
 }
 
