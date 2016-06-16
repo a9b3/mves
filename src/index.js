@@ -1,17 +1,8 @@
 const argv = require('yargs').argv
 import fs from 'fs'
 import * as commands from './commands.js'
-import { execPromise, isDirectory } from './helper.js'
+import { execPromise, isDirectory, fileExists } from './helper.js'
 import path from 'path'
-
-export function fileExists(file) {
-  try {
-    fs.accessSync(file, fs.F_OK)
-    return true
-  } catch (e) {
-    return false
-  }
-}
 
 async function main() {
   const command = argv._[0]

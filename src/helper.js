@@ -25,3 +25,12 @@ export function isDirectory(filePath) {
   const lstat = fs.lstatSync(filePath)
   return lstat.isDirectory()
 }
+
+export function fileExists(file) {
+  try {
+    fs.accessSync(file, fs.F_OK)
+    return true
+  } catch (e) {
+    return false
+  }
+}
