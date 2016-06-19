@@ -1,7 +1,7 @@
 const argv = require('yargs').argv
 import fs from 'fs'
 import * as commands from './commands.js'
-import { execPromise, isDirectory, fileExists } from './helper.js'
+import { execPromise, isDirectory, fileExists, changeFilePathInProjectDir } from './helper.js'
 import path from 'path'
 
 async function main() {
@@ -39,6 +39,11 @@ async function main() {
   try {
     const projectDir = await execPromise(`git rev-parse --show-toplevel`)
     const projectDirFilePath = path.resolve(projectDir)
+    changeFilePathInProjectDir({
+      input,
+      output,
+      projectDir,
+    })
   } catch (e) {
     // do nothing
   }

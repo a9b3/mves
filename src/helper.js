@@ -1,5 +1,6 @@
 import { exec } from 'child_process'
 import fs from 'fs'
+import path from 'path'
 
 export function execPromise(command) {
   return new Promise((resolve, reject) => {
@@ -33,4 +34,22 @@ export function fileExists(file) {
   } catch (e) {
     return false
   }
+}
+
+async function getMatchedFilenames(projectDir, searchterm) {
+  try {
+    const res = await execPromise(`cd ${projectDir} && ag ${searchterm} -l`)
+  } catch (e) {
+    console.log('ERROR', e)
+  }
+  const filenames = res.split('\n')
+  console.log('here', filenames)
+}
+
+export async function changeFilePathInProjectDir({
+  input,
+  output,
+  projectDir,
+}) {
+  const filesnames = await getMatchedFilenames(projectDir, path.basename(input))
 }
