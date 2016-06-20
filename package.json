@@ -7,8 +7,8 @@
     "postversion": "git push && git push --tags && npm publish",
     "lint": "./node_modules/eslint/bin/eslint.js .",
     "test": "npm run lint",
-    "test:js": "./node_modules/mocha/bin/mocha --compilers js:babel-register",
-    "test:js:watch": "./node_modules/mocha/bin/mocha --compilers js:babel-register --watch"
+    "test:js": "./node_modules/mocha/bin/mocha --compilers js:babel-register --require babel-polyfill",
+    "test:js:watch": "./node_modules/mocha/bin/mocha --compilers js:babel-register --require babel-polyfill --watch"
   },
   "homepage": "https://github.com/esayemm/m0v3js",
   "bugs": {
