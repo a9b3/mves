@@ -1,5 +1,4 @@
 const argv = require('yargs').argv
-import fs from 'fs'
 import * as commands from './commands.js'
 import { execPromise, isDirectory, fileExists, changeFilePathInProjectDir } from './helper.js'
 import path from 'path'
@@ -8,10 +7,10 @@ async function main() {
   const command = argv._[0]
 
   // help/version stuff
-  if (argv.v || argv.version || ~['version', 'v'].indexOf(command))  {
+  if (argv.v || argv.version || ~[ 'version', 'v' ].indexOf(command)) {
     commands.version()
     return
-  } else if (argv.help || argv.h || ~['help', 'h'].indexOf(command)) {
+  } else if (argv.help || argv.h || ~[ 'help', 'h' ].indexOf(command)) {
     commands.usage()
     return
   }
@@ -28,7 +27,7 @@ async function main() {
     console.log(`${argv._[0]} is not a valid file path`)
     return
   }
-  if ((fileExists(output) && !isDirectory(output)) && !argv.o) {
+  if (fileExists(output) && !isDirectory(output) && !argv.o) {
     console.log(`${argv._[1]} already exists use -o option to overwrite`)
     return
   }

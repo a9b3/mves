@@ -22,7 +22,7 @@ describe('pathfinder', () => {
     const importerLocation = path.resolve(__dirname, './foo/one/test.js')
     const changedLocation = path.resolve(__dirname, './foo/two/test.js')
 
-    const refactoredImportStatement =  pathfinder.importRefactor({
+    const refactoredImportStatement = pathfinder.importRefactor({
       importerLocation,
       changedLocation,
     })
