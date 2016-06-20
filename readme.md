@@ -1,15 +1,48 @@
-# m0v3js
+# mves
+
+mv ecmascript
+
+mv anything that can be imported by js and have mves automatically resolve import/require statements
 
 ## Installation
 
 ```sh
-npm i -g m0v3js
+npm i -g mves
 ```
 
 ## Usage
 
-Use inside a project directory, project root is determined by where the closest `.git` is located up the tree.
+```sh
+# example
+mves <input> <output>
+```
+
+Example.
+
+Let's say you have this folder structure, and one.js imports two.js the import statement would look something like `import two from '../two/two.js'`
 
 ```sh
-mvjs <input> <output>
+.
+├── one
+│   └── one.js
+└── two
+    └── two.js
 ```
+
+After running
+
+```sh
+mves one/one.js one.js
+```
+
+Your folder structure now looks like this
+
+```sh
+.
+├── one
+├── one.js
+└── two
+    └── two.js
+```
+
+and that import statement now looks like this `import two from './two/two.js'`
