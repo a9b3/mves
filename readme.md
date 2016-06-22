@@ -4,7 +4,7 @@
 
 mv ecmascript
 
-mv anything that can be imported by js and have mves automatically resolve import/require statements
+mv anything that can be imported by js and have mves automatically resolve import/require statements. This works for js, jsx, scss, css and supports import, require, url statements.
 
 ## Installation
 
@@ -48,3 +48,7 @@ Your folder structure now looks like this
 ```
 
 and that import statement now looks like this `import two from './two/two.js'`
+
+## Todo
+
+- support `import foo from './foo'` infer foo.jsx? or foo/index.js
