@@ -1,3 +1,4 @@
+const env = process.env.NODE_ENV
 import fs from 'fs'
 import path from 'path'
 import * as helper from './helper.js'
