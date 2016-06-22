@@ -146,7 +146,7 @@ export function refactorImportsInFile({
       })
       const refactoredLine = line.replace(importPath, refactoredImportPath)
 
-      if (log) console.log(`${changed} line ${i}: ${refactoredLine}`)
+      if (log && env !== 'test') console.log(`${changed} line ${i}: ${refactoredLine}`)
 
       return refactoredLine
     })
@@ -173,7 +173,7 @@ export function refactorImportInImporter({
       const refactoredLine = lines[i].replace(importPath, refactoredImportPath)
       lines[i] = refactoredLine
 
-      if (log) console.log(`${importerLocation} line ${i}: ${refactoredLine}`)
+      if (log && env !== 'test') console.log(`${importerLocation} line ${i}: ${refactoredLine}`)
     })
     return lines.join('\n')
   })
