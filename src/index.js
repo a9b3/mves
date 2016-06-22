@@ -8,6 +8,40 @@ import {
 import * as pathfinder from './pathfinder.js'
 import path from 'path'
 
+export async function moveAndRefactor({
+  input,
+  inputs,
+  output,
+}) {
+  // compile array of { original, changed } objects
+  // this will be used to resolve import statements after moving the files
+  // need to be done before moving, to determine whether or not we're moving the
+  // file into a directory or not
+  const movedFilePaths = pathfinder.getMovedFilePaths(input, output)
+
+  await execPromise(`mv ${input} ${output}`)
+
+  // do the file path stuff
+  // first resolve the moved files import statements
+  const extWhitelist = /\.(js|jsx|css|scss)$/i
+  movedFilePaths.forEach(movedFilePath => {
+    if (!extWhitelist.test(path.extname(movedFilePath.changed))) return
+    pathfinder.refactorImportsInFile(movedFilePath)
+  })
+
+  // refactor import statements for all files that imported the original input
+  movedFilePaths.forEach(async (movedFilePath) => {
+    const matchedFiles = await pathfinder.getFilenamesImportingModule(movedFilePath.original)
+    matchedFiles.forEach(async matchedFile => {
+      await pathfinder.refactorImportInImporter({
+        matchedLines: matchedFile.matchedLines,
+        importerLocation: matchedFile.filepath,
+        changedModuleLocation: movedFilePath.changed,
+      })
+    })
+  })
+}
+
 async function main() {
   const command = argv._[0]
 
@@ -38,32 +72,9 @@ async function main() {
     return
   }
 
-  // compile array of { original, changed } objects
-  // this will be used to resolve import statements after moving the files
-  // need to be done before moving, to determine whether or not we're moving the
-  // file into a directory or not
-  const movedFilePaths = pathfinder.getMovedFilePaths(input, output)
-
-  await execPromise(`mv ${input} ${output}`)
-
-  // do the file path stuff
-  // first resolve the moved files import statements
-  const extWhitelist = /\.(js|jsx|css|scss)$/i
-  movedFilePaths.forEach(movedFilePath => {
-    if (!extWhitelist.test(path.extname(movedFilePath.changed))) return
-    pathfinder.refactorImportsInFile(movedFilePath)
-  })
-
-  // refactor import statements for all files that imported the original input
-  movedFilePaths.forEach(async (movedFilePath) => {
-    const matchedFiles = await pathfinder.getFilenamesImportingModule(movedFilePath.original)
-    matchedFiles.forEach(async matchedFile => {
-      await pathfinder.refactorImportInImporter({
-        matchedLines: matchedFile.matchedLines,
-        importerLocation: matchedFile.filepath,
-        changedModuleLocation: movedFilePath.changed,
-      })
-    })
+  await moveAndRefactor({
+    input,
+    output,
   })
 }
 
