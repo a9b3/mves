@@ -21,13 +21,11 @@ export function execPromise(command) {
   })
 }
 
-export async function setupDirectories() {
+export async function setupDirectories(outputDir) {
   const testDir = path.resolve(__dirname, './_testdir')
-  const outputDir = path.resolve(__dirname, './testdir')
   await execPromise(`cp -r ${testDir} ${outputDir}`)
 }
 
-export async function removeDirectories() {
-  const outputDir = path.resolve(__dirname, './testdir')
+export async function removeDirectories(outputDir) {
   await execPromise(`rm -rf ${outputDir}`)
 }
