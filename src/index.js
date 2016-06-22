@@ -10,7 +10,6 @@ import path from 'path'
 
 export async function moveAndRefactor({
   input,
-  inputs,
   output,
 }) {
   // compile array of { original, changed } objects
@@ -30,16 +29,17 @@ export async function moveAndRefactor({
   })
 
   // refactor import statements for all files that imported the original input
-  movedFilePaths.forEach(async (movedFilePath) => {
+  const promises = movedFilePaths.map(async (movedFilePath) => {
     const matchedFiles = await pathfinder.getFilenamesImportingModule(movedFilePath.original)
-    matchedFiles.forEach(async matchedFile => {
-      await pathfinder.refactorImportInImporter({
+    return matchedFiles.map(matchedFile => {
+      pathfinder.refactorImportInImporter({
         matchedLines: matchedFile.matchedLines,
         importerLocation: matchedFile.filepath,
         changedModuleLocation: movedFilePath.changed,
       })
     })
   })
+  await Promise.all(promises)
 }
 
 async function main() {
