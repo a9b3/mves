@@ -1,5 +1,4 @@
 import should from 'should'
-import path from 'path'
 import * as pathfinder from '../src/pathfinder.js'
 import * as helper from './helper.js'
 

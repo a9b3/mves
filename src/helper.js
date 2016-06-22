@@ -42,7 +42,7 @@ function walkFileTree(node, fn) {
     const files = fs.readdirSync(node)
     return [].concat.apply([], files.map(file => walkFileTree(path.resolve(node, file), fn)))
   } else {
-    return [fn(node)]
+    return [ fn(node) ]
   }
 }
 

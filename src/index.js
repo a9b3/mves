@@ -7,7 +7,6 @@ import {
 } from './helper.js'
 import * as pathfinder from './pathfinder.js'
 import path from 'path'
-import util from 'util'
 
 async function main() {
   const command = argv._[0]

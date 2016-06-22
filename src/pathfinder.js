@@ -96,9 +96,15 @@ export function importRefactor({
 }
 
 /**
+ * Gets import path from a string.
+ * eg.
+ *  import foo from '../foo'
+ *  should return
+ *  ../foo
+ *
  * @param {String} str - a string to extract just the path out
- * @param {=String} keyword
- * @returns {String|undefined} path extracted from str
+ * @param {String=} keyword - optional keyword to search for
+ * @returns {String} path extracted from str
  */
 export function getImportPath(str, keyword = '.*') {
   const regexpTest = new RegExp(`((import|require|from).('|"))(\.+\/${keyword})('|")`)
@@ -120,6 +126,7 @@ export function getImportPath(str, keyword = '.*') {
  *
  * @param {String} original - absolute path to original location
  * @param {String} changed - absolute path to moved location
+ * @returns {null} no returns
  */
 export function refactorImportsInFile({
   original,
@@ -176,13 +183,18 @@ export function refactorImportInImporter({
  * Get file paths that import the given module path.
  *
  * @param {String} originalModulePath - absolute path to module
- * @param {=String} scope - absolute path of scope for search
+ * @param {String=} scope - absolute path of scope for search
  * @returns {Array<String>} array of absolute paths
  */
 export async function getFilenamesImportingModule(originalModulePath, scope) {
   try {
-    const gitRes = await helper.execPromise(`git rev-parse --show-toplevel`)
-    const searchScope = gitRes.trim()
+    let searchScope
+    if (scope) {
+      searchScope = scope
+    } else {
+      const gitRes = await helper.execPromise(`git rev-parse --show-toplevel`)
+      searchScope = gitRes.trim()
+    }
     const searchTerm = path.basename(originalModulePath)
     const agRes = await helper.execPromise(`ag \\\(require\\\|from\\\)\\\.\\\*${searchTerm} ${searchScope} -l`)
 
@@ -210,10 +222,10 @@ export async function getFilenamesImportingModule(originalModulePath, scope) {
       return matchedLines.length === 0
         ? false
         :
-          {
-            filepath: file,
-            matchedLines,
-          }
+        {
+          filepath: file,
+          matchedLines,
+        }
     })
     .filter(a => a)
 
