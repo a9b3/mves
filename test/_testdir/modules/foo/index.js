@@ -1,3 +1,3 @@
-module.exports = function() {
-  console.log(`hello i am foo`)
+module.exports = {
+  name: 'foo',
 }

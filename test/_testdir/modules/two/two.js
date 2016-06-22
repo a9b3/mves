@@ -1,3 +1,4 @@
-module.exports = function() {
-  console.log(`hello i am two`)
+module.exports = {
+  name: 'two',
 }
+
