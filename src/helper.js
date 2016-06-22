@@ -36,20 +36,25 @@ export function fileExists(file) {
   }
 }
 
-async function getMatchedFilenames(projectDir, searchterm) {
-  try {
-    const res = await execPromise(`cd ${projectDir} && ag ${searchterm} -l`)
-  } catch (e) {
-    console.log('ERROR', e)
+function walkFileTree(node, fn) {
+  if (!fileExists(node)) return
+  if (isDirectory(node)) {
+    const files = fs.readdirSync(node)
+    return [].concat.apply([], files.map(file => walkFileTree(path.resolve(node, file), fn)))
+  } else {
+    return [fn(node)]
   }
-  const filenames = res.split('\n')
-  console.log('here', filenames)
 }
 
-export async function changeFilePathInProjectDir({
-  input,
-  output,
-  projectDir,
-}) {
-  const filesnames = await getMatchedFilenames(projectDir, path.basename(input))
+export function mapFileTree(node, fn) {
+  const results = walkFileTree(node, fn).filter(a => a)
+  return [].concat.apply([], results)
+}
+
+// fn must return fileContent to be written back into file
+export function modifyFile(file, fn) {
+  const fileContent = fs.readFileSync(file, { encoding: 'utf8' })
+  const modifiedContent = fn(fileContent)
+  if (!modifiedContent || modifiedContent.constructor !== String) return
+  fs.writeFileSync(file, modifiedContent, { encoding: 'utf8' })
 }
