@@ -1,4 +1,4 @@
-# mves (not published yet)
+# mves
 
 [![Build Status](https://travis-ci.org/esayemm/mves.svg?branch=master)](https://travis-ci.org/esayemm/mves)
 
