@@ -1,6 +1,7 @@
 # mves
 
 [![Build Status](https://travis-ci.org/esayemm/mves.svg?branch=master)](https://travis-ci.org/esayemm/mves)
+[![npm version](https://badge.fury.io/js/mves.svg)](https://badge.fury.io/js/mves)
 
 mv ecmascript
 
