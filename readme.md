@@ -9,6 +9,8 @@ mv anything that can be imported by js and have mves automatically resolve impor
 
 ## Installation
 
+Requires `ag` and `git`, both of which can be installed via `brew`.
+
 ```sh
 npm i -g mves
 ```
