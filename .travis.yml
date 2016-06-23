@@ -1,3 +1,5 @@
+os:
+  - osx
 language: node_js
 node_js:
   - "6.1.0"
@@ -7,8 +9,8 @@ cache:
     - node_modules
 
 before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq silversearcher-ag
+  - brew update
+  - brew install the_silver_searcher
 
 install:
   - npm install
