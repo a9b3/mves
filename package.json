@@ -6,6 +6,7 @@
   "scripts": {
     "postversion": "git push && git push --tags && npm publish",
     "lint": "./node_modules/eslint/bin/eslint.js .",
+    "lint:modified": "./scripts/pre-commit-eslint.sh",
     "test": "npm run lint && npm run test:js",
     "test:js": "NODE_ENV=test ./node_modules/mocha/bin/mocha --compilers js:babel-register --require babel-polyfill",
     "test:js:watch": "NODE_ENV=test ./node_modules/mocha/bin/mocha --compilers js:babel-register --require babel-polyfill --watch"
