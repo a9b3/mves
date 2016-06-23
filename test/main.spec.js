@@ -4,7 +4,7 @@ import * as helper from './helper.js'
 import {
   fileExists,
 } from '../src/helper.js'
-import { moveAndRefactor } from '../src/index.js'
+import { moveAndRefactor } from '../src/pathfinder.js'
 
 describe('main cli', () => {
 

@@ -234,3 +234,37 @@ export async function getFilenamesImportingModule(originalModulePath, scope) {
     return []
   }
 }
+
+export async function moveAndRefactor({
+  input,
+  output,
+}) {
+  // compile array of { original, changed } objects
+  // this will be used to resolve import statements after moving the files
+  // need to be done before moving, to determine whether or not we're moving the
+  // file into a directory or not
+  const movedFilePaths = getMovedFilePaths(input, output)
+
+  await helper.execPromise(`mv ${input} ${output}`)
+
+  // do the file path stuff
+  // first resolve the moved files import statements
+  const extWhitelist = /\.(js|jsx|css|scss)$/i
+  movedFilePaths.forEach(movedFilePath => {
+    if (!extWhitelist.test(path.extname(movedFilePath.changed))) return
+    refactorImportsInFile(movedFilePath)
+  })
+
+  // refactor import statements for all files that imported the original input
+  const promises = movedFilePaths.map(async (movedFilePath) => {
+    const matchedFiles = await getFilenamesImportingModule(movedFilePath.original)
+    return matchedFiles.map(matchedFile => {
+      refactorImportInImporter({
+        matchedLines: matchedFile.matchedLines,
+        importerLocation: matchedFile.filepath,
+        changedModuleLocation: movedFilePath.changed,
+      })
+    })
+  })
+  await Promise.all(promises)
+}

@@ -10,7 +10,7 @@ export function execPromise(command) {
         return
       }
       if (stderr) {
-        reject(stderr)
+        reject(new Error(stderr))
         return
       }
       if (stdout) {

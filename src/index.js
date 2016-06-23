@@ -8,40 +8,6 @@ import {
 import * as pathfinder from './pathfinder.js'
 import path from 'path'
 
-export async function moveAndRefactor({
-  input,
-  output,
-}) {
-  // compile array of { original, changed } objects
-  // this will be used to resolve import statements after moving the files
-  // need to be done before moving, to determine whether or not we're moving the
-  // file into a directory or not
-  const movedFilePaths = pathfinder.getMovedFilePaths(input, output)
-
-  await execPromise(`mv ${input} ${output}`)
-
-  // do the file path stuff
-  // first resolve the moved files import statements
-  const extWhitelist = /\.(js|jsx|css|scss)$/i
-  movedFilePaths.forEach(movedFilePath => {
-    if (!extWhitelist.test(path.extname(movedFilePath.changed))) return
-    pathfinder.refactorImportsInFile(movedFilePath)
-  })
-
-  // refactor import statements for all files that imported the original input
-  const promises = movedFilePaths.map(async (movedFilePath) => {
-    const matchedFiles = await pathfinder.getFilenamesImportingModule(movedFilePath.original)
-    return matchedFiles.map(matchedFile => {
-      pathfinder.refactorImportInImporter({
-        matchedLines: matchedFile.matchedLines,
-        importerLocation: matchedFile.filepath,
-        changedModuleLocation: movedFilePath.changed,
-      })
-    })
-  })
-  await Promise.all(promises)
-}
-
 async function main() {
   const command = argv._[0]
 
@@ -58,30 +24,20 @@ async function main() {
     return
   }
 
-  if (argv._.length < 2) {
-    console.log(`Not enough arguments provided`)
-    return
-  }
+  if (argv._.length < 2) throw new Error(`Not enough arguments provided`)
 
   // extract args
   const input = path.resolve('.', argv._[0])
   const output = path.resolve('.', argv._[argv._.length - 1])
 
   // error handling
-  if (!input || !output) {
-    console.log(`Must provide input and output`)
-    return
-  }
-  if (!fileExists(input)) {
-    console.log(`${argv._[0]} is not a valid file path`)
-    return
-  }
+  if (!input || !output) throw new Error(`Must provide input and output`)
+  if (!fileExists(input)) throw new Error(`${argv._[0]} is not a valid file path`)
   if (fileExists(output) && !isDirectory(output) && !argv.o) {
-    console.log(`${argv._[1]} already exists use -o option to overwrite`)
-    return
+    throw new Error(`${argv._[1]} already exists use -o option to overwrite`)
   }
 
-  await moveAndRefactor({
+  await pathfinder.moveAndRefactor({
     input,
     output,
   })
@@ -92,7 +48,7 @@ async function asyncWrapper(fn) {
   try {
     await fn()
   } catch (e) {
-    console.log('ERROR:', e)
+    console.log('ERROR:', e.message)
   }
 }
 asyncWrapper(main)
