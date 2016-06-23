@@ -45,6 +45,10 @@ export async function moveAndRefactor({
 async function main() {
   const command = argv._[0]
 
+  // check for deps, ag and git
+  await execPromise(`type ag >/dev/null 2>&1 || { echo >&2 "Requires ag 'brew install ag'"; }`)
+  await execPromise(`type git >/dev/null 2>&1 || { echo >&2 "Requires git 'brew install git'"; }`)
+
   // help/version stuff
   if (argv.v || argv.version || ~[ 'version', 'v' ].indexOf(command)) {
     commands.version()
@@ -83,8 +87,12 @@ async function main() {
   })
 }
 
-try {
-  main()
-} catch (e) {
-  console.log('ERROR', e)
+// wrapper to catch errors lol
+async function asyncWrapper(fn) {
+  try {
+    await fn()
+  } catch (e) {
+    console.log('ERROR:', e)
+  }
 }
+asyncWrapper(main)
