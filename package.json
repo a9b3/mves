@@ -1,6 +1,6 @@
 {
   "name": "mves",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "CLI for moving js assets and updating file paths in project dir",
   "main": "index.js",
   "scripts": {
