@@ -52,4 +52,8 @@ and that import statement now looks like this `import two from './two/two.js'`
 
 ## Todo
 
-- support `import foo from './foo'` infer foo.jsx? or foo/index.js
+- support `import foo from './foo'` foo could potentially be `foo.js` or `foo/index.js` right now it only supports `import foo from './foo.js`'
+
+- better logging for user, right now it prints absolute path of modified file, nicer to print relative to project root or specified scope.
+
+- support multiple input args just like mv for ex. `mv foo bar zed dir` will move foo bar and zed into dir
