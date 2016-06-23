@@ -54,9 +54,14 @@ async function main() {
     return
   }
 
+  if (argv._.length < 2) {
+    console.log(`Not enough arguments provided`)
+    return
+  }
+
   // extract args
   const input = path.resolve('.', argv._[0])
-  const output = path.resolve('.', argv._[1])
+  const output = path.resolve('.', argv._[argv._.length - 1])
 
   // error handling
   if (!input || !output) {
