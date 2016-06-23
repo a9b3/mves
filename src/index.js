@@ -7,6 +7,7 @@ import {
 } from './helper.js'
 import * as pathfinder from './pathfinder.js'
 import path from 'path'
+import chalk from 'chalk'
 
 async function main() {
   const command = argv._[0]
@@ -48,7 +49,7 @@ async function asyncWrapper(fn) {
   try {
     await fn()
   } catch (e) {
-    console.log('ERROR:', e.message)
+    console.log(chalk.red('ERROR:', e.message))
   }
 }
 asyncWrapper(main)

@@ -7,10 +7,11 @@ export function usage() {
   console.log(``)
   console.log(`Move js, style, images and updates path references in project directory`)
   console.log(``)
-  console.log(`Options:`)
-  console.log(``)
-  console.log(`  -o    override output path if it exists`)
-  console.log(``)
+  // no options yet
+  // console.log(`Options:`)
+  // console.log(``)
+  // console.log(`  -o    override output path if it exists`)
+  // console.log(``)
 }
 
 export function version() {
